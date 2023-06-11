@@ -1,5 +1,8 @@
 package it.discovery.persistence.repository;
 
-public interface PublisherRepository {
+import it.discovery.persistence.model.Publisher;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PublisherRepository extends JpaRepository<Publisher, Integer> {
 
 }
