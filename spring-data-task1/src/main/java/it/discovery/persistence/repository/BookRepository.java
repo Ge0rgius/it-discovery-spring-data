@@ -3,6 +3,8 @@ package it.discovery.persistence.repository;
 import it.discovery.persistence.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ScrollPosition;
+import org.springframework.data.domain.Window;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -44,6 +46,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT b FROM Book b left join fetch b.hits")
     Page<Book> findWithHits(Pageable pageable);
+
+    Window<Book> findBy(ScrollPosition scrollPosition);
 
 //    List<BookInfo> find();
 }
