@@ -1,9 +1,17 @@
 package it.discovery.persistence.repository;
 
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import it.discovery.persistence.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@DataJpaTest
+@AutoConfigureEmbeddedDatabase
 class BookRepositoryTest {
 
     @Autowired
@@ -11,6 +19,12 @@ class BookRepositoryTest {
 
     @Test
     void save_bookWithPublisher_success() {
+        Book book = createBook();
+        bookRepository.save(book);
+
+        List<Book> books = bookRepository.findAll();
+        assertEquals(1, books.size());
+        assertEquals("Spring Data JPA 3", books.get(0).getName());
     }
 
     @Test
@@ -23,7 +37,7 @@ class BookRepositoryTest {
 
     private Book createBook() {
         Book book = new Book();
-        book.setName("Hibernate with JPA 3");
+        book.setName("Spring Data JPA 3");
         book.setPages(100);
 
         Publisher publisher = new Publisher();

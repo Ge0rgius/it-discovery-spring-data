@@ -74,7 +74,7 @@ public class Book extends BaseEntity {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Hit> hits;
 
-    @Formula("(SELECT COUNT(h.*) FROM HIT h WHERE h.BOOK_ID = ID)")
+    @Formula("(SELECT COUNT(h.ID) FROM hit h WHERE h.BOOK_ID = ID)")
     private Integer hitCount;
 
     public void addHit(Hit hit) {
