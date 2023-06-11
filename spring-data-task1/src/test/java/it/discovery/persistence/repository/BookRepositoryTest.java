@@ -2,6 +2,7 @@ package it.discovery.persistence.repository;
 
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import it.discovery.persistence.model.*;
+import it.discovery.persistence.model.tuple.BookInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -42,6 +43,17 @@ class BookRepositoryTest {
 
         List<Book> books = bookRepository.findAll();
         assertEquals(1, books.size());
+    }
+
+    @Test
+    void findBy_booksExist_success() {
+        Book book = createBook();
+        bookRepository.save(book);
+
+        List<BookInfo> books = bookRepository.findBy();
+        assertEquals(1, books.size());
+        assertEquals("Spring Data JPA 3", books.get(0).name());
+        assertEquals(1, books.get(0).id());
     }
 
     @Test

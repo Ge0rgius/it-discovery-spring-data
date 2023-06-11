@@ -1,6 +1,7 @@
 package it.discovery.persistence.repository;
 
 import it.discovery.persistence.model.Book;
+import it.discovery.persistence.model.tuple.BookInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.ScrollPosition;
@@ -49,5 +50,5 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     Window<Book> findBy(ScrollPosition scrollPosition);
 
-//    List<BookInfo> find();
+    List<BookInfo> findBy();
 }
