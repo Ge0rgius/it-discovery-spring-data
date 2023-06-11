@@ -2,9 +2,9 @@ spring:
   jpa:
     database: MySQL
     show-sql: true
+    generate-ddl: true
     properties:
       hibernate:
-        ddl-auto: create-drop
         dialect: org.hibernate.dialect.MySQLDialect
         cache:
           region:

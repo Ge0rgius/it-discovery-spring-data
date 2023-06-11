@@ -23,7 +23,9 @@ class PublisherRepositoryTest {
     @ServiceConnection
     static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8")
             .withUsername("admin")
-            .withPassword("admin");
+            .withPassword("admin")
+            .withDatabaseName("admin")
+            .withReuse(true);
 
 //    @DynamicPropertySource
 //    static void mapProperties(DynamicPropertyRegistry registry) {
