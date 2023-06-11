@@ -3,15 +3,20 @@ package it.discovery.persistence.repository;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import it.discovery.persistence.model.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureEmbeddedDatabase
+@Transactional
 class BookRepositoryTest {
 
     @Autowired
@@ -28,16 +33,41 @@ class BookRepositoryTest {
     }
 
     @Test
-    void findAll_bookExists_success() {
+    void findAll_booksExist_success() {
+        Book book = createBook();
+        bookRepository.save(book);
+
+        List<Book> books = bookRepository.findAll();
+        assertEquals(1, books.size());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"R", "Relational", "RELATIONAL", "Relational Databases"})
+    void findByNameLikeIgnoreCase_booksExist_success(String name) {
+        Book book = createBook("Relational Databases");
+        bookRepository.save(book);
+
+        List<Book> books = bookRepository.findByNameLikeIgnoreCase("%" + name + "%");
+        assertEquals(1, books.size());
+        assertTrue(books.get(0).getName().toUpperCase().contains(name.toUpperCase()));
     }
 
     @Test
     void findTotalPage_bookExists_success() {
+        Book book = createBook();
+        bookRepository.save(book);
+
+        int total = bookRepository.findTotalPages();
+        assertEquals(100, total);
     }
 
     private Book createBook() {
+        return createBook("Spring Data JPA 3");
+    }
+
+    private Book createBook(String bookName) {
         Book book = new Book();
-        book.setName("Spring Data JPA 3");
+        book.setName(bookName);
         book.setPages(100);
 
         Publisher publisher = new Publisher();

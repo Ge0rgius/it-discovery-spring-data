@@ -27,7 +27,7 @@ public class BookService {
     }
 
     void save(Book book) {
-        //TODO implement
+        bookRepository.save(book);
     }
 
 }
