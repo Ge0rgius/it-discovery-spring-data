@@ -3,7 +3,9 @@ package it.discovery.persistence.service;
 import it.discovery.persistence.model.Book;
 import it.discovery.persistence.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -22,8 +24,15 @@ public class BookService {
      * @return
      */
     List<Book> searchBooks(String name, int pages) {
-        //TODO implement
-        return null;
+        Book probe = new Book();
+        if (StringUtils.hasText(name)) {
+            probe.setName(name);
+        }
+        if (pages > 0) {
+            probe.setPages(pages);
+        }
+        Example<Book> example = Example.of(probe);
+        return bookRepository.findAll(example);
     }
 
     void save(Book book) {

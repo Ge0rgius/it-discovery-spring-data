@@ -1,16 +1,22 @@
 package it.discovery.persistence.service;
 
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import it.discovery.persistence.model.Address;
 import it.discovery.persistence.model.Book;
 import it.discovery.persistence.model.Person;
 import it.discovery.persistence.model.Publisher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@AutoConfigureEmbeddedDatabase
+@Transactional
 class BookServiceTest {
 
     @Autowired
@@ -33,6 +39,7 @@ class BookServiceTest {
 
         bookService.save(book);
 
+        //TODO check book search if pages is 0 or name is empty
         List<Book> books = bookService.searchBooks("Spring Data", 500);
         assertEquals(1, books.size());
         assertEquals(book.getId(), books.get(0).getId());
