@@ -7,6 +7,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -39,6 +42,21 @@ class BookRepositoryTest {
 
         List<Book> books = bookRepository.findAll();
         assertEquals(1, books.size());
+    }
+
+    @Test
+    void findWithHits_booksExist_success() {
+        for (int i = 1; i <= 100; i++) {
+            Book book = createBook("Spring Data JPA. Book #" + i);
+            bookRepository.save(book);
+        }
+
+        Page<Book> books = bookRepository.findWithHits(PageRequest.of(1, 20, Sort.by("created")));
+        assertEquals(100, books.getTotalElements());
+        assertEquals(20, books.getContent().size());
+        assertEquals(5, books.getTotalPages());
+        assertEquals(1, books.getContent().get(0).getHits().size());
+        assertEquals("Spring Data JPA. Book #21", books.getContent().get(0).getName());
     }
 
     @ParameterizedTest
