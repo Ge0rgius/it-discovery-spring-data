@@ -1,21 +1,9 @@
 package it.discovery.persistence.model;
 
 import jakarta.persistence.Embeddable;
-import lombok.*;
+import lombok.Builder;
 
-@Getter
-@Setter
 @Embeddable
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Address {
-
-    private String city;
-
-    private String street;
-
-    private int apartment;
-
-    private String zip;
+public record Address(String city, String street, int apartment, String zip) {
 }
